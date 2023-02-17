@@ -1,9 +1,10 @@
 import { View, Text } from 'react-native'
+import DishesItem from '../Components/DishesItem'
 
 const Home = () => {
   return (
     <View>
-      <Text className=''>Home</Text>
+      <DishesItem/>
     </View>
   )
 }

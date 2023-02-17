@@ -1,7 +1,7 @@
 import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import HomeScreen from './Screens/Home';
 import CartPage from './Screens/CartPage';
 import Reservation from './Screens/Reservation';
@@ -21,9 +21,26 @@ const Tab = createMaterialTopTabNavigator();
 
 function TopNavigator() {
   return (
-    <Tab.Navigator >
-      <Tab.Screen   name="HomeScreen" component={HomeScreen} />
-      <Tab.Screen  name="CartPage" component={CartPage} />
+    <Tab.Navigator screenOptions={{
+      tabBarStyle:{backgroundColor: "#24272e"},
+      tabBarInactiveTintColor: "white",
+      tabBarActiveTintColor: "white"
+    }} >
+      <Tab.Screen style={styles.navbar} 
+         options={{tabBarIcon: ({ focused, size }) => ( 
+         <AntDesign name="home" size={24} color={focused ? 'white' : '#ccc'} />
+        ),
+        }}
+          name="Home" component={HomeScreen} />
+      <Tab.Screen 
+        options={{
+          tabBarBadge: () => <View style={styles.badgeContainer}><Text style={styles.badge}>3</Text></View>,
+          tabBarBadgeStyle: {backgroundColor:'yellow'},
+          tabBarIcon: ({ focused, size }) => ( 
+        <Feather name="shopping-cart" size={24} color={focused ? 'white' : '#ccc'} />
+          ),
+        }}
+       name="Cart" component={CartPage} />
       </Tab.Navigator>
     );
   }
@@ -35,39 +52,34 @@ const Drawer = createDrawerNavigator();
         <Drawer.Navigator>
               <Drawer.Screen
                  options={{ headerTitle: "" , drawerIcon: ({ focused, size }) => ( 
-                  <AntDesign name="home" size={size} color={focused ? 'blue' : '#ccc'} />
+                  <AntDesign name="home" size={24} color={focused ? 'blue' : '#ccc'} />
                   ),
                  }}
-                name="Home" component={TopNavigator} 
-              />
+                name="App" component={TopNavigator}  />
               <Drawer.Screen 
                  options={{ drawerIcon: ({ focused, size }) => ( 
-                 <AntDesign name="user" size={size} color={focused ? 'blue' : '#ccc'} />
+                 <AntDesign name="user" size={24} color={focused ? 'blue' : '#ccc'} />
                   ),
                  }}
-                 name="Profile" component={Profile} 
-               />
+                 name="Profile" component={Profile}/>
                 <Drawer.Screen 
                   options={{ drawerIcon: ({ focused, size }) => ( 
-                    <AntDesign name="calendar" size={size} color={focused ? 'blue' : '#ccc'} />
+                    <AntDesign name="calendar" size={24} color={focused ? 'blue' : '#ccc'} />
                     ),
                   }}
-                  name="Reservation" component={Reservation} 
-                />
+                  name="Reservation" component={Reservation}/>
                 <Drawer.Screen 
                     options={{ drawerIcon: ({ focused, size }) => ( 
                     <MaterialIcons name="quick-contacts-dialer" size={24} color={focused ? 'blue' : '#ccc'} />
                     ),
                   }}
-                  name="Contact" component={Contact} 
-                />
+                  name="Contact" component={Contact} />
                 <Drawer.Screen 
                   options={{ drawerIcon: ({ focused, size }) => ( 
                     <Feather name="log-out" size={24} color={focused ? 'blue' : '#ccc'} />
                     ),
                   }}
-                  name="Logout" component={Logout} 
-                />
+                  name="Logout" component={Logout} />
         </Drawer.Navigator>
       );
     }
@@ -81,8 +93,14 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
-  container:{
-    paddingTop: 200
-  }
+  badgeContainer: {
+    backgroundColor: 'yellow',
+    padding: 3,
+    borderRadius: 10,
+  },
+  badge: {
+    color: 'black',
+    fontSize: 10,
+  },
 });
 
