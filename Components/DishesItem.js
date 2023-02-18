@@ -1,77 +1,64 @@
 import {StyleSheet, View, Text, Image, Button, SafeAreaView, ScrollView,  } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {TouchableOpacity } from 'react-native-gesture-handler'
+import axios from "axios";
+import { SERVER_URL } from '../constant';
+import { useNavigation } from '@react-navigation/native';
 
 
-const DishesItem = () => {
+const DishesItem = ({category}) => {
+  const [dishes, setDishes] = useState([]);
+  const navigation = useNavigation();
+
+
+  useEffect(() => {
+    const URL = `${SERVER_URL}/dishes${category === "all" ? "" : `/list/?category=${category}`}`;
+  
+    const fetchDishes = async () => {
+      try {
+        const response = await axios.get(URL);
+        const allDishes = response.data.dishes; 
+
+  
+        const availableDishes = allDishes.filter((dish) => dish.quantity > 0);
+  
+        const dishes = availableDishes.map((dish) => {
+          return {
+            ...dish,
+            quantity: 1,
+          };
+        });
+  
+        setDishes(dishes);
+      } catch (error) {
+        console.error("Error fetching dishes:", error);
+      }
+    };
+  
+    fetchDishes();
+  }, [category]);
+
   return (
     <SafeAreaView>
+     
     <ScrollView>
      <View style={styles.container}>
-        <View style={styles.divContainer}>
-            <Image style={styles.image} source={require('../assets/icon.png')} />
+     {dishes?.map((dish) => (
+        <View  key={dish.id} style={styles.divContainer}>
+          <TouchableOpacity key={dish.id} onPress={() => navigation.navigate('SingleDishes', { dishId: dish.id })}>
+            <Image style={styles.image} source={{uri: `${SERVER_URL}/${dish?.image}`}}/>
+            </TouchableOpacity>
             <View style={styles.info}>
-            <Text style={styles.title}>Product Name</Text>
+            <Text style={styles.title}>{dish?.name}</Text>
             <View style={styles.priceContainer}>
-                <Text style={styles.price}>$19.99</Text>
+                <Text style={styles.price}>Ksh. {dish?.price}</Text>
                 <TouchableOpacity style={styles.button}>
                 <Text style={styles.buttonText}>Add to Cart</Text>
                 </TouchableOpacity>
             </View>
             </View>
         </View>
-
-        <View style={styles.divContainer}>
-            <Image style={styles.image} source={require('../assets/icon.png')} />
-            <View style={styles.info}>
-            <Text style={styles.title}>Product Name</Text>
-            <View style={styles.priceContainer}>
-                <Text style={styles.price}>$19.99</Text>
-                <TouchableOpacity style={styles.button}>
-                <Text style={styles.buttonText}>Add to Cart</Text>
-                </TouchableOpacity>
-            </View>
-            </View>
-        </View>
-        <View style={styles.divContainer}>
-            <Image style={styles.image} source={require('../assets/icon.png')} />
-            <View style={styles.info}>
-            <Text style={styles.title}>Product Name</Text>
-            <View style={styles.priceContainer}>
-                <Text style={styles.price}>$19.99</Text>
-                <TouchableOpacity style={styles.button}>
-                <Text style={styles.buttonText}>Add to Cart</Text>
-                </TouchableOpacity>
-            </View>
-            </View>
-        </View>
-
-        <View style={styles.divContainer}>
-            <Image style={styles.image} source={require('../assets/icon.png')} />
-            <View style={styles.info}>
-            <Text style={styles.title}>Product Name</Text>
-            <View style={styles.priceContainer}>
-                <Text style={styles.price}>$19.99</Text>
-                <TouchableOpacity style={styles.button}>
-                <Text style={styles.buttonText}>Add to Cart</Text>
-                </TouchableOpacity>
-            </View>
-            </View>
-        </View>
-
-        <View style={styles.divContainer}>
-            <Image style={styles.image} source={require('../assets/icon.png')} />
-            <View style={styles.info}>
-            <Text style={styles.title}>Product Name</Text>
-            <View style={styles.priceContainer}>
-                <Text style={styles.price}>$19.99</Text>
-                <TouchableOpacity style={styles.button}>
-                <Text style={styles.buttonText}>Add to Cart</Text>
-                </TouchableOpacity>
-            </View>
-            </View>
-        </View>
-  
+        ))}
      </View>
     </ScrollView>
     </SafeAreaView>
@@ -100,7 +87,7 @@ const styles = StyleSheet.create({
       },
     image: {
       width: '100%',
-      height: '60%',
+      height: 150,
       resizeMode: 'cover',
       borderTopLeftRadius: 8,
       borderTopRightRadius: 8,
