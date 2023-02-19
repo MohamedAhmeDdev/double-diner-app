@@ -5,10 +5,12 @@ import HomeScreen from '../Screens/Home';
 import CartPage from '../Screens/CartPage';
 import { AntDesign } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons'; 
+import { UseCartContext } from "../Hook/UseCartHook";
 
 const Tab = createMaterialTopTabNavigator();
 
 export default function Navbar() {
+  const { cartItems } = UseCartContext();
 
     return (
       <Tab.Navigator screenOptions={{
@@ -22,7 +24,7 @@ export default function Navbar() {
         />
         <Tab.Screen 
           options={{
-            tabBarBadge: () => <View style={styles.badgeContainer}><Text style={styles.badge}>3</Text></View>,
+            tabBarBadge: () => <View style={styles.badgeContainer}><Text style={styles.badge}>{cartItems.length}</Text></View>,
             tabBarBadgeStyle: {backgroundColor:'yellow'},
             tabBarIcon: ({ focused }) => ( <Feather name="shopping-cart" size={24} color={focused ? 'white' : '#ccc'} /> )}}
            name="Cart" component={CartPage}

@@ -10,6 +10,7 @@ import { Feather } from '@expo/vector-icons';
 import Contact from './Screens/Contact';
 import SingleDishes from './Screens/SingleDishes';
 import Navbar from './Components/Navbar';
+import { CartContextProvider } from './context/CartContext';
 
 
 const Logout = ()=>{
@@ -69,9 +70,11 @@ function DrawerNavigator() {
 
 export default function App() {
   return (
+    <CartContextProvider>
     <NavigationContainer>
        <DrawerNavigator/>
     </NavigationContainer>
+    </CartContextProvider>
   );
 }
 

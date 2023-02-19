@@ -4,12 +4,13 @@ import {TouchableOpacity } from 'react-native-gesture-handler'
 import axios from "axios";
 import { SERVER_URL } from '../constant';
 import { useNavigation } from '@react-navigation/native';
+import { UseCartContext } from "../Hook/UseCartHook";
 
 
 const DishesItem = ({category}) => {
   const [dishes, setDishes] = useState([]);
   const navigation = useNavigation();
-
+  const { cartItems, addToCart, removeFromCart } = UseCartContext()
 
   useEffect(() => {
     const URL = `${SERVER_URL}/dishes${category === "all" ? "" : `/list/?category=${category}`}`;
@@ -40,23 +41,29 @@ const DishesItem = ({category}) => {
 
   return (
     <SafeAreaView>
-     
     <ScrollView>
      <View style={styles.container}>
      {dishes?.map((dish) => (
         <View  key={dish.id} style={styles.divContainer}>
-          <TouchableOpacity key={dish.id} onPress={() => navigation.navigate('SingleDishes', { dishId: dish.id })}>
+          <TouchableOpacity key={dish.id} onPress={() => navigation.navigate('SingleDishes',
+              { dishId: dish.id, dishName: dish.name, dishImage: dish.image, dishPrice: dish.price, dishDescription:dish.description })}>
             <Image style={styles.image} source={{uri: `${SERVER_URL}/${dish?.image}`}}/>
-            </TouchableOpacity>
-            <View style={styles.info}>
-            <Text style={styles.title}>{dish?.name}</Text>
-            <View style={styles.priceContainer}>
-                <Text style={styles.price}>Ksh. {dish?.price}</Text>
-                <TouchableOpacity style={styles.button}>
-                <Text style={styles.buttonText}>Add to Cart</Text>
-                </TouchableOpacity>
-            </View>
-            </View>
+          </TouchableOpacity>
+          <View style={styles.info}>
+              <Text style={styles.title}>{dish?.name}</Text>
+              <View style={styles.priceContainer}>
+                  <Text style={styles.price}>Ksh. {dish?.price}</Text>
+                  {cartItems.find((item) => item.id === dish.id) ? (
+                    <TouchableOpacity style={styles.removeButton} onPress={() => removeFromCart(dish?.id)}>
+                      <Text style={styles.buttonText}>Remove</Text>
+                    </TouchableOpacity>
+                  ) : (
+                    <TouchableOpacity style={styles.addButton} onPress={() => addToCart(dish)}>
+                      <Text style={styles.buttonText}>Add</Text>
+                    </TouchableOpacity>
+                  )}
+              </View>
+          </View>
         </View>
         ))}
      </View>
@@ -110,15 +117,32 @@ const styles = StyleSheet.create({
       fontWeight: 'bold',
     },
     button: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+      borderRadius: 5,
+      paddingVertical: 10,
+      paddingHorizontal: 20,
+      marginVertical: 10,
+    },
+    buttonText: {
+      color: 'white',
+      fontSize: 16,
+      fontWeight: 'bold',
+      marginLeft: 5,
+      textAlign: 'center',
+    },
+    addButton: {
       marginTop: 8,
       backgroundColor: '#007AFF',
       padding: 8,
       borderRadius: 4,
     },
-    buttonText: {
-      color: '#fff',
-      textAlign: 'center',
-      fontWeight: 'bold',
+    removeButton: {
+      marginTop: 8,
+      padding: 8,
+      borderRadius: 4,
+      backgroundColor: '#e53e3e',
     },
   });
   
