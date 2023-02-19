@@ -22,27 +22,43 @@ export default function Navbar() {
           options={{tabBarIcon: ({ focused }) => ( <AntDesign name="home" size={24} color={focused ? 'white' : '#ccc'} /> )}}
           name="Home" component={HomeScreen} 
         />
-        <Tab.Screen 
-          options={{
-            tabBarBadge: () => <View style={styles.badgeContainer}><Text style={styles.badge}>{cartItems.length}</Text></View>,
-            tabBarBadgeStyle: {backgroundColor:'yellow'},
-            tabBarIcon: ({ focused }) => ( <Feather name="shopping-cart" size={24} color={focused ? 'white' : '#ccc'} /> )}}
-           name="Cart" component={CartPage}
-          />
-        </Tab.Navigator>
+        <Tab.Screen options={{
+           tabBarIcon: ({ focused }) => (
+          <View style={styles.iconContainer}>
+            <Feather name="shopping-cart" size={24} color={focused ? 'white' : '#ccc'} />
+              <View style={styles.countContainer}>
+                <Text style={styles.count}>{cartItems.length}</Text>
+              </View>
+          </View>
+           )}}
+           name="Cart"  component={CartPage}
+        />
+      </Tab.Navigator>
     );
 }
 
 
 
 const styles = StyleSheet.create({
-  badgeContainer: {
-    backgroundColor: 'yellow',
-    padding: 3,
-    borderRadius: 10,
+  iconContainer: {
+    position: 'relative',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  badge: {
+  countContainer: {
+    position: 'absolute',
+    top: -8,
+    right: -8,
+    backgroundColor: 'yellow',
+    borderRadius: 10,
+    width: 20,
+    height: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  count: {
     color: 'black',
-    fontSize: 10,
+    fontSize: 12,
+    fontWeight: 'bold',
   },
 });
