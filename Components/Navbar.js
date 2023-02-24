@@ -1,5 +1,5 @@
 import {StyleSheet, Text, View } from 'react-native'
-import React, { Component } from 'react'
+import React from 'react'
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import HomeScreen from '../Screens/Home';
 import CartPage from '../Screens/CartPage';
@@ -19,16 +19,15 @@ export default function Navbar() {
         tabBarActiveTintColor: "white"
        }}>
         <Tab.Screen style={styles.navbar} options={{tabBarIcon: ({ focused }) => ( 
-           <AntDesign name="home" size={24} color={focused ? 'white' : '#ccc'} /> )}}
-           name="Home" component={HomeScreen} />
+           <AntDesign name="home" size={24} color={focused ? 'white' : '#ccc'} /> 
+          )}} name="Home" component={HomeScreen} />
 
         <Tab.Screen options={{ tabBarIcon: ({ focused }) => (
             <View style={styles.iconContainer}>
                 <Feather name="shopping-cart" size={24} color={focused ? 'white' : '#ccc'} />
                 <View style={styles.countContainer}><Text style={styles.count}>{cartItems.length}</Text></View>
             </View>
-           )}}
-           name="Cart"  component={CartPage} />
+          )}} name="Cart" component={CartPage} />
       </Tab.Navigator>
     );
 }

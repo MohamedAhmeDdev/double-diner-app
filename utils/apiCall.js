@@ -1,4 +1,4 @@
-import { SERVER_URL } from "../constants";
+import { SERVER_URL } from "../constant";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 // import { toast } from "react-toastify";

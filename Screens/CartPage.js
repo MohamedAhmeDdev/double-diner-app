@@ -4,10 +4,13 @@ import { DataTable } from 'react-native-paper';
 import { UseCartContext } from "../Hook/UseCartHook";
 import { SERVER_URL } from '../constant';
 import {TouchableOpacity } from 'react-native-gesture-handler'
+import { useNavigation } from '@react-navigation/native';
 
 const CartPage = () => {
+  const navigation = useNavigation();
   const { cartItems, removeFromCart, updateItemQuantity, clear } = UseCartContext();
   const totalPrice = cartItems.reduce( (price, item) => price + item.quantity * item.price, 0);
+
   return (
     <>
      {cartItems.length >= 1 && (
@@ -58,7 +61,7 @@ const CartPage = () => {
           )} 
 
           {cartItems.length >= 1 && (
-          <TouchableOpacity style={styles.btnIncrement} >
+          <TouchableOpacity style={styles.btnIncrement} onPress={() => navigation.navigate('CheckOut')} >
           <Text style={styles.btnText}>Proceed To CheckOut</Text>
           </TouchableOpacity>
           )} 

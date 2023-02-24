@@ -63,21 +63,22 @@ const DrawerNavigation = () => {
               <AntDesign name="home" size={24} color={focused ? 'blue' : '#ccc'} />
             )}} name="App" component={StackNavigation } />
             
-             <Drawer.Screen options={{ drawerIcon: ({ focused }) => ( 
-                <AntDesign name="user" size={24} color={focused ? 'blue' : '#ccc'} />
-              )}} name="Profile" component={Profile}/>
+            <Drawer.Screen options={{ headerTitle: "",drawerIcon: ({ focused }) => (
+               <AntDesign name="user" size={24} color={focused ? "blue" : "#ccc"}/>
+             )}} name="Profile">{() => <Profile userId={user.id} userName={user.name} userEmail={user.email} />}
+            </Drawer.Screen>
 
-             <Drawer.Screen options={{ drawerIcon: ({ focused }) => ( 
+            <Drawer.Screen options={{headerTitle: "" , drawerIcon: ({ focused }) => ( 
                 <AntDesign name="calendar" size={24} color={focused ? 'blue' : '#ccc'} />
-              )}} name="Reservation" component={Reservation}/>
+            )}} name="Reservation" component={Reservation}/>
 
-             <Drawer.Screen options={{ drawerIcon: ({ focused }) => ( 
+            <Drawer.Screen options={{headerTitle: "" , drawerIcon: ({ focused }) => ( 
                 <MaterialIcons name="quick-contacts-dialer" size={24} color={focused ? 'blue' : '#ccc'} />
-              )}} name="Contact" component={Contact} />
+             )}} name="Contact" component={Contact} />
 
-             <Drawer.Screen options={{ drawerIcon: ({ focused }) => ( 
+            <Drawer.Screen options={{headerTitle: "" , drawerIcon: ({ focused }) => ( 
                 <Feather name="log-out" size={24} color={focused ? 'blue' : '#ccc'} />
-              )}} name="Logout" component={Logout} />
+            )}} name="Logout" component={Logout} />
       </Drawer.Navigator>
     ) : (
       <Drawer.Navigator>
@@ -85,7 +86,7 @@ const DrawerNavigation = () => {
               <AntDesign name="home" size={24} color={focused ? 'blue' : '#ccc'} />
             )}} name="App" component={StackNavigation } />
               
-            <Drawer.Screen options={{ drawerIcon: ({ focused }) => ( 
+            <Drawer.Screen options={{headerTitle: "" , drawerIcon: ({ focused }) => ( 
                   <MaterialIcons name="quick-contacts-dialer" size={24} color={focused ? 'blue' : '#ccc'} />
                 )}} name="Contact" component={Contact} />
 
