@@ -2,7 +2,6 @@ import {StyleSheet, Text, Image, ScrollView } from 'react-native'
 import React from 'react'
 import { DataTable } from 'react-native-paper';
 import { UseCartContext } from "../Hook/UseCartHook";
-import { SERVER_URL } from '../constant';
 import {TouchableOpacity } from 'react-native-gesture-handler'
 import { useNavigation } from '@react-navigation/native';
 

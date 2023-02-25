@@ -3,7 +3,7 @@ import { useNavigation, useRoute } from '@react-navigation/native'
 import React, { useEffect, useState ,useLayoutEffect} from "react";
 import { SERVER_URL } from '../constant';
 import axios from "axios";
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getToken } from "../utils/getToken";
 import { MaterialIcons } from '@expo/vector-icons';
 
 
@@ -18,20 +18,11 @@ const SingleOrder = () => {
       })
      }, [])
 
-    const getToken = async () => {
-        try {
-          const user = await AsyncStorage.getItem('user');
-          const token = user ? JSON.parse(user).token : null;
-          return token;
-        } catch (error) {
-          console.log(error);
-        }
-      };
 
       useEffect(() => {
         const getOrder = async () => {
           try {
-            const token = await getToken();
+            const token = await  getToken();
             const headers = { Authorization: `${token}` };
       
             const response  = await axios.get(`${SERVER_URL}/orders/${orderId}`, { headers });

@@ -2,11 +2,13 @@ import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-nati
 import React from 'react'
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import { Fontisto } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { formatDateTime } from "../utils/functions";
 
 
-const  OrderItem = ({ order }) => {
+const  OrderItem = ({ order, onCancelOrder ,handleDelete}) => {
   const navigation = useNavigation();
 
     const formatItemsListToSting = (items = []) => {
@@ -18,11 +20,37 @@ const  OrderItem = ({ order }) => {
       }
       return itemsList.join(", ");
     };
-  
     const orderedItems = order?.dishes?.map((item) => item?.metadata);
 
+
+    const Cancel = ({orderId, onCancelOrder })=>{
+      const handleCancelOrder = () => {
+        onCancelOrder(orderId);
+      };
+      return(
+        <TouchableOpacity style={styles.cancel} onPress={handleCancelOrder}>
+          <Text style={styles.cancelIcon}> <MaterialIcons name="cancel" size={40} color={"white"}/></Text>
+        </TouchableOpacity>
+      )
+    }
+
+
+    const Delete = ({orderId, handleDelete })=>{
+      const handleHandleDeleteOrder = () => {
+        handleDelete(orderId);
+      };
+      return(
+        <TouchableOpacity style={styles.delete} onPress={handleHandleDeleteOrder}>
+          <Text style={styles.cancelIcon}> <AntDesign  name="delete" size={40} color={"white"}/></Text>
+        </TouchableOpacity>
+      )
+    }
+
 return (
-      <View style={styles.orderContainer} key={order.order_id} horizontal={true} showsVerticalScrollIndicator ={false}>
+  <>
+  {order.order_status === 'PENDING' ?(
+  <Swipeable renderRightActions={() => (<Cancel orderId={order.order_id} onCancelOrder={onCancelOrder} />)}>
+      <View style={styles.orderContainer} key={order.order_id} showsVerticalScrollIndicator ={false}>
           <Text style={styles.orderId}>Order ID: {order.order_id}</Text>
           <Text style={styles.price}>Total Price: Ksh {order.total_price}</Text>
           <Text style={styles.date}>{formatItemsListToSting(orderedItems)}</Text>
@@ -36,22 +64,43 @@ return (
             </View>
           </TouchableOpacity>
        </View>
+  </Swipeable>
+  ):( 
+       
+  <Swipeable  renderRightActions={() => (<Delete orderId={order.order_id} handleDelete={handleDelete} />)}>
+      <View style={styles.orderContainer} key={order.order_id}  showsVerticalScrollIndicator ={false}>
+          <Text style={styles.orderId}>Order ID: {order.order_id}</Text>
+          <Text style={styles.price}>Total Price: Ksh {order.total_price}</Text>
+          <Text style={styles.date}>{formatItemsListToSting(orderedItems)}</Text>
+          <Text style={styles.dish}>Items: {formatDateTime(order.order_date)}</Text>
+          {order.order_status === 'PENDING' ?<Text>Status: <Text style={ styles.orderStatusPending}>{order.order_status}</Text></Text> : 
+          <Text>Status: <Text style={ styles.orderStatusComplete}>{order.order_status}</Text></Text> }
+
+          <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate('SingleOrder', { screen: 'SingleOrder', orderId: order.order_id })}>
+            <View style={styles.icon}>
+              <Fontisto name="more-v-a" size={24} color={"black"}/>
+            </View>
+          </TouchableOpacity>
+       </View>
+   </Swipeable>
+)}
+</>
   )
 };
 
-const OdersItem = ({ orders }) => {
+const OdersItem = ({ orders , onCancelOrder, handleDelete}) => {
   
  return(
     <ScrollView style={styles.container}>
-            {orders?.length > 0 ? (
-                <>
-                {orders.map((order) => (
-                    <OrderItem  key={order.order_id} order={order}  />
-                ))}
-                </>
-            ) : (
-                <Text style={styles.text}>No Orders Found</Text>
-            )}
+      {orders?.length > 0 ? (
+        <>
+         {orders.map((order) => (
+            <OrderItem  key={order.order_id} order={order} onCancelOrder={onCancelOrder} handleDelete={handleDelete}/>
+          ))}
+        </>
+        ) : (
+        <Text style={styles.text}>No Orders Found</Text>
+      )}
     </ScrollView>
      )
 }
@@ -122,5 +171,15 @@ const styles = StyleSheet.create({
       icon:{
         justifyContent: 'center',
         alignItems: 'center'
+      },
+      cancel:{
+        backgroundColor: 'green',
+        justifyContent: 'center',
+        padding: 25,
+      },
+      delete:{
+        backgroundColor: '#e53e3e',
+        justifyContent: 'center',
+        padding: 25,
       },
   });
