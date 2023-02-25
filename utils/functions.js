@@ -12,3 +12,9 @@ export const formatDateTime = (date) => {
 
   return `${_date} ${time}`;
 };
+
+
+// const dateString = ''
+//     const date = new Date(dateString.replace(' ', 'T'));
+//     const formattedDate = `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()} ${date.toLocaleTimeString([], { hour: 'numeric', minute: 'numeric', hour12: true })}`;
+
