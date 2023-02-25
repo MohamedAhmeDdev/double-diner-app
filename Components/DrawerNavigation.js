@@ -14,6 +14,7 @@ import Profile from '../Screens/Profile';
 import StackNavigation from './StackNavigation';
 import {StyleSheet, Text, View } from 'react-native'
 import { Avatar } from 'react-native-elements';
+import OrderPage from '../Screens/OrderPage';
 
 const DrawerNavigation = () => {
     const Drawer = createDrawerNavigator();
@@ -67,6 +68,10 @@ const DrawerNavigation = () => {
                <AntDesign name="user" size={24} color={focused ? "blue" : "#ccc"}/>
              )}} name="Profile">{() => <Profile userId={user.id} userName={user.name} userEmail={user.email} />}
             </Drawer.Screen>
+
+            <Drawer.Screen options={{ drawerIcon: ({ focused }) => ( 
+                <FontAwesome name="history" size={24} color={focused ? 'blue' : '#ccc'} />
+            )}} name="MyOrders" component={OrderPage}/>
 
             <Drawer.Screen options={{headerTitle: "" , drawerIcon: ({ focused }) => ( 
                 <AntDesign name="calendar" size={24} color={focused ? 'blue' : '#ccc'} />

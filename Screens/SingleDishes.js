@@ -1,4 +1,4 @@
-import {StyleSheet, View, Image, Text, ScrollView, TouchableOpacity } from 'react-native';
+import {StyleSheet, View, Image, Text, TouchableOpacity } from 'react-native';
 import React, { useLayoutEffect } from 'react'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import { SERVER_URL } from '../constant';
@@ -13,6 +13,7 @@ const SingleDishes = () => {
     headerShown: false
    })
   }, [])
+
   return (
     <View style={styles.container}>
         <Image source={{ uri: `${SERVER_URL}/${dishImage}` }} style={styles.image} />

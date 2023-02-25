@@ -5,6 +5,7 @@ import { UseAuthContext, } from "../Hook/UseAuthContext";
 import { SERVER_URL } from '../constant';
 import validator from "validator";
 import { apiCall } from "../utils/apiCall";
+import { useNavigation } from '@react-navigation/native';
 
 
 const CheckOutPage = () => {
@@ -12,6 +13,7 @@ const CheckOutPage = () => {
     const [address, setAddress] = useState("");
     const { cartItems, clear } = UseCartContext();
     const { user } = UseAuthContext();
+    const navigation = useNavigation();
 
     const total = cartItems.reduce( (acc, item) => acc + item.quantity * item.price, 0 );
 
@@ -46,6 +48,7 @@ const CheckOutPage = () => {
           .then((res) => {
             console.log("Order placed successfully");
             clear()//its clears the cart
+            navigation.navigate('MyOrders')
           })
           .catch((err) => {
             console.log(err);
