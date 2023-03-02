@@ -9,6 +9,7 @@ import { UseAuthContext } from "../Hook/UseAuthContext";
 const LoginPage = () => {
   const[email, setEmail] =useState('')
   const[password, setPassword] =useState('')
+  const[error, setError] =useState(false)
   const navigation = useNavigation();
   const { dispatch } = UseAuthContext();
 
@@ -29,9 +30,9 @@ const LoginPage = () => {
       });
     } catch (error) {
       if (error.response?.status === 400) {
-        console.log("Username or password is missing"); //send errors if you have not sing in
+        setError("Username or password is missing"); //send errors if you have not sing in
       } else if (error.response?.status === 401) {
-        console.log("Invalid login credentials"); // /send errors if password and email does not much
+        setError("Invalid login credentials"); // /send errors if password and email does not much
       }
     }
   };
@@ -39,6 +40,7 @@ const LoginPage = () => {
 
   return (
     <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.container} >
+      <Text style={{ color: 'red' }}>{error}</Text>
     <TouchableWithoutFeedback   onPress={() => {Keyboard.dismiss()}}>
       <View style={styles.form}>
         <Text style={styles.header}>Login</Text>

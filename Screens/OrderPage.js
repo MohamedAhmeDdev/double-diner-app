@@ -48,20 +48,20 @@ const OrderPage = () => {
   };
 
 
-  const handleDelete = async (order_id) => {
+  const handleDelete = async (id) => {
     const token = await getToken();
     const headers = { Authorization: `${token}` };
-    const response = await axios.delete(`${SERVER_URL}/orders/${order_id}`, { headers })
+    const response = await axios.delete(`${SERVER_URL}/orders/${id}`, { headers })
       .then((response) => {
-        setOrders((items) => items.filter((item) => item.id !== id));
+        setOrders((items) => items.filter((item) => item.order_id !== id)); // update state variable after deleting the order
         console.log("Order Deleted");
       })
       .catch((error) => {
         console.error(error);
       });
   };
+  
     
-
 
 
   return (

@@ -11,6 +11,7 @@ import { useNavigation } from '@react-navigation/native';
 const CheckOutPage = () => {
     const [phoneNo, setPhoneNo] = useState("254");
     const [address, setAddress] = useState("");
+    const[error, setError] =useState(false)
     const { cartItems, clear } = UseCartContext();
     const { user } = UseAuthContext();
     const navigation = useNavigation();
@@ -22,15 +23,15 @@ const CheckOutPage = () => {
         e.preventDefault();
     
         if (!phoneNo) {
-          console.log("Please fill in your phone number");
+          setError("Please fill in your phone number");
           return;
         }
         if (!address) {
-          console.log("Please fill in your address");
+          setError("Please fill in your address");
           return;
         }
         if (!validator.isMobilePhone(phoneNo, "en-KE")) {
-          console.log("Please enter a valid phone number");
+          setError("Please enter a valid phone number");
           return;
         }
     
@@ -46,12 +47,12 @@ const CheckOutPage = () => {
     
         apiCall("/orders", "POST", order)
           .then((res) => {
-            console.log("Order placed successfully");
+            setError("Order placed successfully");
             clear()//its clears the cart
             navigation.navigate('MyOrders')
           })
           .catch((err) => {
-            console.log(err);
+            setError(err);
           });
       };
     
@@ -72,6 +73,9 @@ const CheckOutPage = () => {
             ))}
         </View> 
         <Text style={styles.title}>Your Total is <Text style={styles.titleName}>Ksh.{total}</Text> /= payable on delivery</Text>
+
+
+        <Text style={styles.errors}>{error}</Text>
 
         <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.container}>
         <View style={styles.form}>
@@ -100,6 +104,11 @@ export default CheckOutPage
 const styles = StyleSheet.create({
     container:{
         flex: 1,
+    },
+    errors:{
+      textAlign: 'center',
+      color: 'red',
+      paddingTop: 20
     },
     title: {
         paddingTop: 20,

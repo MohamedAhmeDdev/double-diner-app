@@ -9,32 +9,34 @@ const RegistrationPage = () => {
   const[name, setName] =useState('')
   const[email, setEmail] =useState('')
   const[password, setPassword] =useState('')
+  const[error, setError] =useState(false)
   const navigation = useNavigation();
   const regEx = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-z]{2,8}(.[a-z{2,8}])?/g;
+
 
   const signup = async (e) => {
     e.preventDefault();
     try {
       if (password.length < 4){
-    console.log("Password Must Be More Than 4")
+    setError("Password Must Be More Than 4")
   }
     else if (!regEx.test(email)){
-    console.log("Incorrect Email (example@gmail.com)")
+    setError("Incorrect Email (example@gmail.com)")
   }
-    else if(
-       await axios.post(`${SERVER_URL}/auth/signup`, {
+  else if(
+    await axios.post(`${SERVER_URL}/auth/signup`, {
         name: name,
         email: email,
         password: password,
-      })
-      )
+    })
+  )
       navigation.navigate('Login');
-    } catch (error) {
+  } catch (error) {
       if (error.response?.status === 400) {
-        console.log("Username, email or password is missing"); 
+       setError("Username, email or password is missing"); 
       }
       if (error.response?.status === 401) {
-        console.log("Email already exists");
+       setError("Email already exists");
       }
     }
   };
@@ -42,6 +44,7 @@ const RegistrationPage = () => {
 
   return (
     <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.container}>
+     <Text style={{ color: 'red' }}>{error}</Text>
     <TouchableWithoutFeedback   onPress={() => {Keyboard.dismiss()}}>
       <View style={styles.form}>
         <Text style={styles.header}>SignUp</Text>

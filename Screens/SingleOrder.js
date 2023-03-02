@@ -18,6 +18,14 @@ const SingleOrder = () => {
       })
      }, [])
 
+     const handleNavigateToMyOrders = () => {
+      navigation.reset({
+          index: 0,
+          routes: [{ name: 'MyOrders' }]
+        })
+   
+    };
+
 
       useEffect(() => {
         const getOrder = async () => {
@@ -41,7 +49,7 @@ const SingleOrder = () => {
 
   return (
     <ScrollView style={styles.container}>
-      <TouchableOpacity style={styles.backButton} onPress={() => navigation.navigate('MyOrders')}>
+      <TouchableOpacity style={styles.backButton} onPress={handleNavigateToMyOrders}>
           <MaterialIcons name="arrow-back" size={30} color="black" />
         </TouchableOpacity>
 
